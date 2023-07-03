@@ -20,7 +20,7 @@ async function getAddressFromCEP(cep: string): Promise<addressData> {
   // FIXME: está com CEP fixo!
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
 
-  if (result.status !== 200 || result.data.error) {
+  if (result.status !== 200 || result.data.erro) {
     throw notFoundError();
   }
   const { logradouro, complemento, bairro, localidade , uf } = result.data;
