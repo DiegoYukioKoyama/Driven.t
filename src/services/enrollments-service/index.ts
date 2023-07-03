@@ -20,15 +20,15 @@ async function getAddressFromCEP(cep: string): Promise<addressData> {
   // FIXME: está com CEP fixo!
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
 
-  if (!result.data) {
+  if (result.status !== 200 || result.data.error) {
     throw notFoundError();
   }
-  const { logradouro, complemento, bairro, cidade, uf } = result.data;
+  const { logradouro, complemento, bairro, localidade , uf } = result.data;
   return {
     logradouro,
     complemento,
     bairro,
-    cidade,
+    cidade: localidade,
     uf
   };
 }
@@ -66,7 +66,7 @@ async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollm
     if(!addressData) {
       throw new Error("CEP inválido ou não encontrado.");
     }
-  } catch (error) {
+  } catch (error) { 
     throw new Error("CEP inválido ou não encontrado.");
   }
 
